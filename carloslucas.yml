@@ -1,0 +1,148 @@
+swagger: "2.0"
+info:
+  title: API estudo de ACL
+  version: 1.0.0
+  contact:
+    name: meu nome
+    email: meu.nome@riogrande.ifrs.edu.br
+  license:
+    name: Proprietário
+host: meuhost.ifrs.edu.br
+basePath: /tads/carloslucas/api/v1
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+tags:
+- name: "Users"
+  description: "Usuários da aplicação"
+- name: "Role"
+  description: "Funções"
+- name: "Permission"
+  description: "Permissões"
+paths: # endpoints
+  /users:
+    get:
+      tags:
+        - "Users"
+      summary: Retorna uma lista de todos usuarios.
+      description: Obtém uma lista dos usuários.
+      produces:
+        - application/json
+      responses:
+        404:
+          description: NOT FOUND, nenhum usuario encontrado.
+        200:
+          description: OK, com a lista de usuários
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/usuario'
+    post:
+      tags:
+      - "Users"
+      summary: Adiciona um novo usuário.
+      description: Adiciona um novo usuário.
+      produces:
+        - application/json
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Adicionar um novo usuários"
+          required: true
+          schema: 
+            $ref: '#/definitions/usuario'
+      responses:
+        400: 
+          description: erro 
+        200: 
+          description: usuário adicionado
+    put:
+      tags:
+      - "Users"
+      summary: Atualiza um usuário.
+      description: Atualiza um usuário.
+      produces:
+        - application/json
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Atualizar um usuários"
+          required: true
+          schema: 
+            $ref: '#/definitions/usuario'
+      responses:
+        200:  
+          description: "Usuário atualizado"
+        404:
+          description: NOT FOUND, nenhum usuario encontrado.
+  /users/{cpf}:
+    get:
+      tags:
+      - "Users"
+      summary: Retorna uma usuario.
+      description: Obtém um usuário.
+      produces:
+        - application/json
+      parameters:
+        - name: Id do usuário
+          in: "path"
+          description: "id do usuários"
+          required: true
+          type: string
+          format: uuid
+      responses:
+        404:
+          description: NOT FOUND, nenhum usuario encontrado.
+        400:
+          description: erro
+        200: 
+          description: usuário
+          schema: 
+            $ref: '#/definitions/usuario'
+
+    delete:
+      tags:
+      - "Users"
+      summary: deleta um usuario.
+      description: Deleta um usuário.
+      produces:
+        - application/json
+      parameters:
+        - name: Id do usuário
+          in: "path"
+          description: "id do usuários"
+          required: true
+          type: string
+          format: uuid
+      responses:
+        404:
+          description: NOT FOUND, nenhum usuario encontrado.
+        200: 
+          description: usuário removido
+
+definitions:
+  usuario:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: O código uuid do usuario.
+        example: b503a6cd-d10f-4a71-8cea-31f686abbc4b
+        readOnly: true
+      cpf:
+        type: string
+        description: O cpf do usuário.
+        example: 123.456.789-00
+      name:
+        type: string
+        description: nome do usuário
+        example: José da Silva Sauro
+
+    required:
+      - name
+      - cpf
