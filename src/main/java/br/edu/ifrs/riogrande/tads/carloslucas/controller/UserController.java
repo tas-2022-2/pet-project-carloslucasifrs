@@ -97,7 +97,7 @@ public class UserController {
 
 		Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
 		List<String> erros = violations.stream()
-			.map(v -> v.getMessage())//.toList();
+			.map(v -> v.getMessage())
 			.collect(Collectors.toList());
  
 		return Map.of("erros", erros);
@@ -109,7 +109,7 @@ public class UserController {
 		(MethodArgumentNotValidException ex) {
 
 			List<String> erros = ex.getFieldErrors().stream()
-				.map(e -> e.getDefaultMessage())//.toList();
+				.map(e -> e.getDefaultMessage())
 				.collect(Collectors.toList());
 
 			return Map.of("erros", erros);
